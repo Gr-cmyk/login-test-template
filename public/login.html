@@ -1,0 +1,104 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>bottom gear</title>
+		<script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
+	</head>
+	<body>
+		Login Page Here
+		
+		<br />
+		<h3 id="err1">Could Not Find Account. Check Username and Password spelling.</h3>
+		<h3 id="err2">Inncorrect Password. Try again.</h3>
+		<style>
+			#err1 {
+				color: red;
+				background-color: lightPink;
+				border-color: red;
+				border-style: solid;
+				border-radius: 5px;
+				display: none;
+			}
+			#err2 {
+				color: red;
+				background-color: lightPink;
+				border-color: red;
+				border-style: solid;
+				border-radius: 5px;
+				display: none;
+			}
+		</style>
+		<br />
+		
+		<name for="user">Username</name> <br />
+		<input name="user" id="user" type="text"> <br />
+		<name for="pass">Password</name> <br />
+		<input name="pass" id="pass" type="password">
+		
+		<br />
+		<br />
+		
+		<button onclick="loginRequest()">Login!</button>
+		
+		<script>
+			var socket;
+			socket = io.connect('192.168.1.77:8000');
+			
+			var id = Math.random() * 999999999;
+			
+			var name = document.getElementById('user');
+			var pass = document.getElementById('pass');
+			
+			socket.on('lgs', login);
+			socket.on('lgn', err1);
+			socket.on('lgw', err2);
+			
+			function err1() {
+				document.getElementById('err1').style.display = 'block';
+				document.getElementById('err2').style.display = 'none';
+			}
+			function err2() {
+				document.getElementById('err1').style.display = 'none';
+				document.getElementById('err2').style.display = 'block';
+			}
+			
+			function loginRequest() {
+				var data = {
+					id: id,
+					user: document.getElementById('user').value,
+					pass: pass.value
+				}
+				
+				socket.emit('loginRequest', data);
+			}
+			
+			function getCookie(cname) {
+				var name = cname + "=";
+				var decodedCookie = decodeURIComponent(document.cookie);
+				var ca = decodedCookie.split(';');
+				for(var i = 0; i <ca.length; i++) {
+					var c = ca[i];
+					while (c.charAt(0) == ' ') {
+						c = c.substring(1);
+					}
+					if (c.indexOf(name) == 0) {
+						return c.substring(name.length, c.length);
+					}
+				}
+				return "";
+			}
+			
+			function login() {
+				if (getCookie('username') != '') {
+					document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+					document.cookie = "password=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+				}
+			
+				document.cookie = "username=" + document.getElementById('user').value + ";path=/";
+				document.cookie = "password=" +	document.getElementById('user').value + ";path=/";
+				
+				location.href = 'http://192.168.1.77:8000/home.html';
+			}
+		</script>
+	</body>
+</html>

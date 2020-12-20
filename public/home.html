@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>bottom gear</title>
+	</head>
+	<body>
+		<h1 id="header">Homepage</h1>
+		<h3>Is this account not you? <button onclick="signout()">Sign Out</button></h3>
+		
+		<script>
+			function getCookie(cname) {
+				var name = cname + "=";
+				var decodedCookie = decodeURIComponent(document.cookie);
+				var ca = decodedCookie.split(';');
+				for(var i = 0; i <ca.length; i++) {
+					var c = ca[i];
+					while (c.charAt(0) == ' ') {
+						c = c.substring(1);
+					}
+					if (c.indexOf(name) == 0) {
+						return c.substring(name.length, c.length);
+					}
+				}
+				return "";
+			}
+			
+			function signout() {
+				document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+				document.cookie = "password=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+				
+				location.href = 'http://192.168.1.77:8000';
+			}
+			
+			var name = getCookie('username');
+			
+			document.getElementById('header').innerHTML = "Welcome Back, " + name;
+		</script>
+	</body>
+</html>

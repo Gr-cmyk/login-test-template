@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>bottom gear</title>
+	</head>
+	<body>
+		<script>
+			function getCookie(cname) {
+				var name = cname + "=";
+				var decodedCookie = decodeURIComponent(document.cookie);
+				var ca = decodedCookie.split(';');
+				for(var i = 0; i <ca.length; i++) {
+					var c = ca[i];
+					while (c.charAt(0) == ' ') {
+						c = c.substring(1);
+					}
+					if (c.indexOf(name) == 0) {
+						return c.substring(name.length, c.length);
+					}
+				}
+				return "";
+			}
+			
+			if (getCookie('username') != '') {
+				location.href = 'http://192.168.1.77:8000/home.html';
+			}
+		</script>
+		<a href="login.html"><button>Login</button></a> <br />
+		<a href="signup.html"><button>Sign Up</button></a>
+	</body>
+</html>

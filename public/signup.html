@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>bottom gear</title>
+		<script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
+	</head>
+	<body>
+		<p>Sign Up Page</p>
+		<br />
+		<h3 id="err1">Account Already Exists. Try a new name.</h3>
+		<style>
+			#err1 {
+				color: red;
+				background-color: lightPink;
+				border-color: red;
+				border-style: solid;
+				border-radius: 5px;
+				display: none;
+			}
+		</style>
+		<br />
+		
+		<name for="user">Username</name> <br />
+		<input id="user" name="user" type="text"> <br />
+		<name for="user">Password</name> <br />
+		<input id="pass" name="pass" type="password">
+		
+		<br />
+		
+		<button onclick="signupRequest()">Sign Up</button>
+		
+		<script>
+			var socket;
+			socket = io.connect('192.168.1.77:8000');
+			
+			var id = Math.random() * 999999999;
+			
+			socket.on('sus', function () {
+				location.href = 'http://192.168.1.77:8000/login.html';
+			});
+			socket.on('sun', function () {
+				document.getElementById('err1').style.display = 'block';
+			});
+			
+			function signupRequest() {
+				var data = {
+					id: id,
+					user: document.getElementById('user').value,
+					pass: document.getElementById('pass').value
+				}
+				
+				socket.emit('signupRequest', data);
+			}
+		</script>
+	</body>
+</html>
